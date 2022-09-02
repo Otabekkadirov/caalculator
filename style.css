@@ -7,6 +7,7 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   box-sizing: border-box;
 }
+
 body {
   background: rgb(167, 31, 69);
   background: linear-gradient(
@@ -16,16 +17,25 @@ body {
     rgba(212, 124, 20, 1) 79%,
     rgba(255, 201, 0, 1) 100%
   );
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   user-select: none;
 }
 
 .calculator {
   max-width: 400px;
-  margin: 0 auto;
   display: grid;
   grid-gap: 1px;
   grid-template-columns: repeat(4, 100px);
   grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 .screen {
@@ -55,6 +65,7 @@ button {
   outline: none;
   cursor: pointer;
   font-size: 3rem;
+  transition: background ease-in-out 0.1s;
 }
 button:hover {
   color: black;

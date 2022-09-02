@@ -1,71 +1,104 @@
-const calculator = document.querySelector(".calculator");
-const previousOperand = document.querySelector(".previous");
-const nextOperand = document.querySelector(".next");
+let previousOperand = "";
+let currentOperand = "";
+let operation = "";
+let result = "";
+
+// All necessary elements from html
+const previousDisplayNumber = document.querySelector("[data-previous]");
+const currentDisplayNumber = document.querySelector("[data-current]");
 
 const allClearButton = document.querySelector("[data-clear]");
 const deleteButton = document.querySelector("[data-delete");
-const equalsButton = document.querySelector("[data-delete");
+const equalsButton = document.querySelector("[data-equals");
 
 const numberButtons = document.querySelectorAll("[data-number]");
 const operationButtons = document.querySelectorAll("[data-operation]");
 
-numberButtons.forEach((button) => {
-  button.addEventListener("click", appendNumber);
+// All Clear button //
+allClearButton.addEventListener("click", allClear);
+function allClear() {
+  previousDisplayNumber.textContent = "";
+  currentDisplayNumber.textContent = "";
+  previousOperand = "";
+  currentOperand = "";
+  operation = "";
+  result = "";
+}
+
+// Delete button //
+deleteButton.addEventListener("click", deleteNumber);
+function deleteNumber() {
+  currentOperand = currentOperand.slice(0, -1);
+  currentDisplayNumber.textContent = currentOperand;
+}
+
+// Equals button //
+equalsButton.addEventListener("click", () => {
+  if (previousOperand && currentOperand) compute();
+  console.log(result);
 });
+function compute() {
+  let a = parseFloat(previousOperand);
+  let b = parseFloat(currentOperand);
+  switch (operation) {
+    case "÷":
+      result = a / b;
+      break;
+    case "*":
+      result = a * b;
+      break;
+    case "+":
+      result = a + b;
+      break;
+    case "-":
+      result = a - b;
+      break;
+    default:
+      break;
+  }
+  currentDisplayNumber.textContent = result;
+  previousDisplayNumber.textContent = "";
+  currentOperand = result;
+  previousOperand = "";
+}
+
+// Number buttons //
+numberButtons.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    appendNumber(e.target.textContent);
+  });
+});
+function appendNumber(number) {
+  // Check if dot is clicked more than 1 times
+  if (number === "." && currentDisplayNumber.textContent.includes(".")) return;
+  // If we have result, clicked number should overwrite the result and current operand
+  if (result) {
+    result = "";
+    currentOperand = "";
+  }
+  // Check if 0 is clicked more than 1 times initially
+  if (currentOperand === "0" && number === "0") return;
+  // If we have 0 initially and  click numbers between 1-9, it should overwrite 0
+  if (currentOperand === "0" && number !== "0" && number !== ".") {
+    currentOperand = number;
+    // Otherwise numbers between 0-9 should append to current operand
+  } else {
+    currentOperand += number;
+  }
+  // Update current display with current operand
+  currentDisplayNumber.textContent = currentOperand;
+}
 
 operationButtons.forEach((button) => {
   button.addEventListener("click", (e) => {
-    if (nextOperand.textContent === "") return;
-
-    // console.log(e.target.textContent);
-
-    calculateNumber(e);
+    if (currentOperand || !operation) chooseOperation(e.target.textContent);
   });
 });
-
-allClearButton.addEventListener("click", allClear);
-deleteButton.addEventListener("click", deleteNumber);
-
-// appendNumber() funksiyasi bosilgan sonni va nuqtani yonma-yon qo'shishi kerak.
-function appendNumber() {
-  if (this.textContent === "." && nextOperand.textContent.includes(".")) return;
-  nextOperand.textContent += this.textContent;
+function chooseOperation(op) {
+  // need fix
+  operation = op;
+  previousOperand = currentOperand;
+  previousDisplayNumber.textContent = previousOperand + " " + operation;
+  currentOperand = "";
+  currentDisplayNumber.textContent = "";
 }
-// allclear() funksiyasi hamma narsani o'chirishi kerak
-function allClear() {
-  previousOperand.textContent = "";
-  nextOperand.textContent = "";
-}
-// delete() funksiyasi faqat oxirgi sonni yoki amalni o'chirishi kerak.
-function deleteNumber() {
-  nextOperand.textContent = nextOperand.innerText.slice(0, -1);
-}
-
-// computeNumber() funksiyasi oldin bosilgan amalni bajarishi kerak.
-function calculateNumber(e) {
-  let hisob;
-  let prev = parseFloat(previousOperand.textContent);
-  let next = parseFloat(nextOperand.textContent);
-
-  prev = isNaN(prev) ? 0 : prev;
-  next = isNaN(next) ? 0 : next;
-
-  //   if (isNaN(prev) || isNaN(next)) return;
-  //   console.log(this);
-  if (e.target.textContent === "+") {
-    hisob = prev + next;
-  } else if (e.target.textContent === "-") {
-    hisob = prev - next;
-  } else if (e.target.textContent === "*") {
-    hisob = prev * next;
-  } else if (e.target.textContent === "÷") {
-    hisob = prev / next;
-  } else {
-    return;
-  }
-  previousOperand.textContent = hisob;
-  nextOperand.textContent = "";
-}
-// displayNumber() funksiyasi bosilgan sonni yoki amalni ekranda chiqarishi kerak
-
-// equals() funksiyasi amalning javobini hisoblashi kerak.
