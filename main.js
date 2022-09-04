@@ -7,7 +7,7 @@ let result = "";
 const previousDisplayNumber = document.querySelector("[data-previous]");
 const currentDisplayNumber = document.querySelector("[data-current]");
 
-const allClearButton = document.querySelector("[data-clear]");
+const allClearButton = document.querySelector("[data-all-clear]");
 const deleteButton = document.querySelector("[data-delete");
 const equalsButton = document.querySelector("[data-equals");
 
@@ -58,8 +58,9 @@ function compute() {
   }
   currentDisplayNumber.textContent = result;
   previousDisplayNumber.textContent = "";
-  currentOperand = result;
+  currentOperand = "" + result;
   previousOperand = "";
+  operation = "";
 }
 
 // Number buttons //
@@ -91,11 +92,10 @@ function appendNumber(number) {
 
 operationButtons.forEach((button) => {
   button.addEventListener("click", (e) => {
-    if (currentOperand || !operation) chooseOperation(e.target.textContent);
+    if (currentOperand && !operation) chooseOperation(e.target.textContent);
   });
 });
 function chooseOperation(op) {
-  // need fix
   operation = op;
   previousOperand = currentOperand;
   previousDisplayNumber.textContent = previousOperand + " " + operation;

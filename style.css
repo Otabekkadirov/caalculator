@@ -73,7 +73,8 @@ button:hover {
 }
 button:active {
   color: white;
-  transform: scale(0.99);
+  /* transform: scale(0.99); */
+  scale: 0.99;
 }
 
 .span-2 {
