@@ -75,10 +75,10 @@ function calculate() {
             result = (prevOperand - currentOperand).toFixed(10);
             break;
         case "*":
-            result = prevOperand * currentOperand;
+            result = (prevOperand * currentOperand).toFixed(10);
             break;
         case "÷":
-            result = prevOperand / currentOperand;
+            result = (prevOperand / currentOperand).toFixed(10);
             break;
         default:
             console.log("error");
@@ -100,11 +100,14 @@ function clear() {
 }
 
 function deleteNumber() {
-    currentOperand = String(currentOperand).slice(0, -1);
+    currentOperand = currentOperand.slice(0, -1);
     updateScreen();
 }
 
 function updateScreen() {
+    console.log(currentOperand.toLocaleString());
+    currentOperand = String(currentOperand);
+    // currentOperand = currentOperand.toLocaleString();
     currentDisplay.textContent = currentOperand;
     prevDisplay.textContent = prevOperand + " " + currentOperation;
 }
